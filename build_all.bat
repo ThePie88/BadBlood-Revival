@@ -17,7 +17,7 @@
 setlocal enabledelayedexpansion
 cd /d "%~dp0"
 
-set VERSION=1.0.0
+set VERSION=1.1.0
 set DIST=dist
 set ZIP_NAME=BadBloodRevival-v%VERSION%.zip
 

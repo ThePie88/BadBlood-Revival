@@ -74,7 +74,7 @@ extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg
 // Launcher metadata — usually no need to change ------------------------------
 
 #define CACHE_FILE      "pie_launcher.dat"
-#define LAUNCHER_VER    "1.0.0"
+#define LAUNCHER_VER    "1.1.0"
 #define VERSION_FILE    "pie_version.txt"
 #define PATCH_DIR       "PATCH-PIE"        // local folder where downloaded
                                             //   client patch is extracted
