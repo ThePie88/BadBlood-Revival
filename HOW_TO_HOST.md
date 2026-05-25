@@ -117,20 +117,24 @@ Each player needs their own patched game copy on their own PC:
 For internet multiplayer. Players join from anywhere with a public IP
 or domain pointing to your VPS.
 
-### What you'll need
+Works on **both Linux and Windows** servers — the Python backend is
+cross-platform, only the deploy automation differs. Pick the OS you
+have a VPS for.
 
-- A Linux VPS (Ubuntu 22.04 / Debian 12 recommended). Smallest tier on
-  any provider is fine — 1 CPU, 1 GB RAM, 10 GB disk is plenty.
+### What you'll need (both platforms)
+
+- A VPS — smallest tier on any provider is fine (1 CPU, 1 GB RAM, 10 GB disk)
 - A domain name **exactly 12 ASCII characters long** (see [the 12-char
   constraint](README.md#the-12-character-hostname-constraint))
   - Examples that work: `pls.foobar.it`, `dlbb.host.io`, `bb-game.io`
   - Examples that don't: `pls.mygame.com` (13 chars), `dlbb.com` (8 chars)
 - DNS access to set an A record for that domain
-- Open inbound TCP `80`, `443`, and UDP/TCP `47584` (firewall + provider firewall)
+- Open inbound TCP `80`, `443`, and UDP/TCP `47584` (OS firewall + cloud
+  provider firewall)
 
-### Step 1 — VPS setup
+### Linux VPS — Step 1
 
-SSH into your VPS as root.
+Ubuntu 22.04 / Debian 12 recommended. SSH in as root.
 
 ```bash
 # 1. Clone the repo
@@ -140,14 +144,14 @@ git clone https://github.com/ThePie88/BadBlood-Revival.git /opt/badblood-revival
 bash /opt/badblood-revival/server-linux/setup_vps.sh pls.example.it
 ```
 
-The script does this for you:
+The script:
 - Installs python3, stunnel4, certbot
 - Creates a venv and installs FastAPI dependencies
 - Generates a self-signed bootstrap cert (you'll replace with Let's Encrypt)
 - Writes `/etc/stunnel/stunnel.conf`
 - Writes `/etc/default/badblood-revival` (environment file)
 - Writes `/etc/systemd/system/badblood-revival.service`
-- Opens firewall ports
+- Opens firewall ports (`ufw`)
 - Enables and starts everything
 
 You should see at the end:
@@ -161,13 +165,64 @@ You should see at the end:
   journalctl -u badblood-revival -f    — live logs
 ```
 
-### Step 2 — DNS
+### Windows VPS — Step 1
+
+Windows Server 2019/2022, or Windows 10/11 with public IP. RDP in,
+open Command Prompt **as Administrator**.
+
+```cmd
+:: 1. Clone the repo
+git clone https://github.com/ThePie88/BadBlood-Revival.git C:\BadBloodRevival
+
+:: 2. Install the prerequisites
+::    (winget works on Windows 10/11 and Windows Server 2022.
+::     On older Windows Server, install winget manually first, OR
+::     download the installers directly — see server-windows/README.md.)
+winget install Python.Python.3.12
+winget install MichalTrojnara.Stunnel
+winget install ShiningLight.OpenSSL.Light
+
+:: 3. Run the install script (replace with your actual 12-char domain)
+cd C:\BadBloodRevival\server-windows
+setup-public.bat pls.example.it
+```
+
+The script:
+- Verifies Python, stunnel, openssl are installed
+- Installs FastAPI dependencies (pip)
+- Generates a self-signed bootstrap cert
+- Writes `server\stunnel.conf` with absolute paths
+- Installs **stunnel as a Windows service** (`net start/stop stunnel`)
+- Creates a **scheduled task** (`BadBloodRevival-Server`) for the FastAPI
+  backend — runs at boot as SYSTEM, auto-restarts on failure (Windows'
+  equivalent of `systemd Restart=always`)
+- Opens Windows Firewall inbound ports 80, 443, 47584
+- Starts everything immediately
+
+You should see at the end:
+
+```
+=========================================
+  SETUP COMPLETE
+=========================================
+  schtasks /Query /TN "BadBloodRevival-Server"   -- backend status
+  sc query stunnel                                -- stunnel service status
+```
+
+See [`server-windows/README.md`](server-windows/README.md) for Windows-
+specific management commands, Let's Encrypt via `win-acme`, logs, and
+backups.
+
+### Step 2 — DNS (both platforms)
 
 In your DNS provider's panel:
 1. Add an A record:
    - Name: the **subdomain part** of your 12-char hostname (e.g. `pls`)
    - Type: A
-   - Value: your VPS's public IP (find it with `curl ifconfig.me` on the VPS)
+   - Value: your VPS's public IP
+     - Linux: `curl ifconfig.me` on the VPS
+     - Windows: `curl ifconfig.me` (works if curl is installed) or
+       check your cloud provider's panel
    - TTL: 300 (default fine)
 2. Wait 1-5 minutes for DNS propagation
 3. Verify from your local machine:
@@ -176,9 +231,9 @@ In your DNS provider's panel:
    ```
    You should see the VPS IP.
 
-### Step 3 — Let's Encrypt certificate
+### Step 3 — Real TLS certificate (replace the bootstrap self-signed)
 
-Replace the bootstrap self-signed cert with a real one:
+#### Linux: Let's Encrypt via certbot
 
 ```bash
 # On the VPS, as root:
@@ -206,6 +261,47 @@ Save (Ctrl+O, Enter, Ctrl+X). Restart stunnel:
 ```bash
 systemctl restart stunnel4
 ```
+
+#### Windows: Let's Encrypt via win-acme
+
+The standard ACME client on Windows is [win-acme](https://www.win-acme.com/).
+
+1. On the Windows VPS, download win-acme from <https://www.win-acme.com/>
+2. Extract it to e.g. `C:\Tools\win-acme`
+3. **Stop stunnel temporarily** (port 80 must be free for the HTTP-01
+   challenge):
+   ```cmd
+   net stop stunnel
+   schtasks /End /TN "BadBloodRevival-Server"
+   ```
+4. Open Command Prompt as Administrator, run:
+   ```cmd
+   cd C:\Tools\win-acme
+   wacs.exe
+   ```
+5. Pick "Create renewal (with advanced options)" → "Manual input" →
+   enter your domain (`pls.example.it`) → HTTP-01 validation → "PemFiles"
+   plugin → output path `C:\BadBloodRevival\server\certs\`
+6. Configure post-renewal script (in the wacs flow): a `.bat` that
+   restarts stunnel:
+   ```cmd
+   net stop stunnel
+   net start stunnel
+   ```
+7. Restart services:
+   ```cmd
+   net start stunnel
+   schtasks /Run /TN "BadBloodRevival-Server"
+   ```
+
+win-acme creates a Windows scheduled task that renews the cert before
+expiry. Verify with:
+```cmd
+schtasks /Query /TN "win-acme renew (acme-v02.api.letsencrypt.org)"
+```
+
+See [`server-windows/README.md`](server-windows/README.md) for more
+detail.
 
 ### Step 4 — Test from outside
 
@@ -277,19 +373,31 @@ certbot renew --dry-run
 
 ### Logs
 
+**Linux:**
 ```bash
 journalctl -u badblood-revival -f      # live backend log
 journalctl -u stunnel4 -f              # live TLS log
 tail -f /opt/badblood-revival/server/pls-emu.log  # FastAPI app log
 ```
 
+**Windows:**
+```powershell
+# Live backend log:
+Get-Content C:\BadBloodRevival\server\pls-emu.log -Wait
+# stunnel log: see C:\Program Files (x86)\stunnel\bin\stunnel.log
+# Scheduled task run history: open taskschd.msc, find BadBloodRevival-Server
+```
+
 ### Backups
 
-The database is at `/opt/badblood-revival/server/data/dlbb.db`. It's
-small (a few MB even with thousands of players). Back it up regularly:
+The database is at:
+- Linux:   `/opt/badblood-revival/server/data/dlbb.db`
+- Windows: `C:\BadBloodRevival\server\data\dlbb.db`
 
+It's small (a few MB even with thousands of players). Back it up regularly.
+
+**Linux (cron):**
 ```bash
-# Daily SQLite backup via systemd timer or cron:
 # Add to /etc/cron.daily/badblood-backup
 #!/bin/bash
 mkdir -p /var/backups/badblood
@@ -298,17 +406,38 @@ sqlite3 /opt/badblood-revival/server/data/dlbb.db ".backup '/var/backups/badbloo
 find /var/backups/badblood -mtime +30 -delete
 ```
 
+**Windows (PowerShell + Task Scheduler):**
+```powershell
+# Save as C:\BadBloodRevival\backup.ps1
+$src = "C:\BadBloodRevival\server\data\dlbb.db"
+$dst = "C:\Backups\BadBlood\dlbb-$(Get-Date -Format yyyyMMdd).db"
+New-Item -ItemType Directory -Path (Split-Path $dst) -Force | Out-Null
+Copy-Item $src $dst
+Get-ChildItem "C:\Backups\BadBlood\dlbb-*.db" |
+    Where-Object { $_.LastWriteTime -lt (Get-Date).AddDays(-30) } |
+    Remove-Item
+```
+Schedule it daily with `taskschd.msc`.
+
 ### Updates
 
+**Linux:**
 ```bash
 cd /opt/badblood-revival
 git pull
-# Restart services if Python code changed
 systemctl restart badblood-revival
 ```
 
-The SQLite schema migration is automatic — `db.init_db()` runs on
-startup and adds any new tables/columns.
+**Windows:**
+```cmd
+cd C:\BadBloodRevival
+git pull
+schtasks /End /TN "BadBloodRevival-Server"
+schtasks /Run /TN "BadBloodRevival-Server"
+```
+
+The SQLite schema migration is automatic on both — `db.init_db()` runs
+on startup and adds any new tables/columns.
 
 ### Monitoring (optional)
 
@@ -326,7 +455,11 @@ Prometheus, etc.).
 Open the SQLite database with the `sqlite3` CLI:
 
 ```bash
+# Linux:
 sqlite3 /opt/badblood-revival/server/data/dlbb.db
+
+:: Windows (after installing sqlite3 CLI via winget install SQLite.SQLite):
+sqlite3 C:\BadBloodRevival\server\data\dlbb.db
 ```
 
 Useful queries:
@@ -365,17 +498,25 @@ DELETE FROM player_items WHERE pls_id = 123;
   hitting a no-op handler — but check the log for patterns.
 - Player passwords are SHA-256 hashed without salt. Not great, not
   terrible. PRs to add bcrypt welcome.
-- Run the backend as a non-root user (the install script uses `root`
-  for simplicity — for a long-running deploy, create a `badblood` user
-  and change the systemd unit).
+- Run the backend as a **non-privileged user** in production. The
+  default install scripts use `root` (Linux) / `SYSTEM` (Windows) for
+  simplicity. For a long-running deploy:
+  - Linux: create a `badblood` user, `chown -R` the install dir,
+    update the systemd unit's `User=` line, restart
+  - Windows: change the scheduled task to run as a dedicated local user
+    (Task Scheduler → BadBloodRevival-Server → Properties → "Change User
+    or Group") instead of SYSTEM
 
 ### Migration (move server to a new VPS)
 
+**Same on Linux and Windows:**
+
 1. On old VPS: stop services, copy `server/data/dlbb.db` and any
-   custom `.env` to a backup
-2. On new VPS: run `setup_vps.sh`, restore the files, restart services
+   custom `.env` / `stunnel.conf` to a backup
+2. On new VPS: run the appropriate setup script, restore the files,
+   restart services
 3. Update DNS A record to point at the new IP
-4. Wait for DNS propagation, verify
+4. Wait for DNS propagation, verify with `curl -sk https://<domain>/...`
 
 ---
 
@@ -415,8 +556,13 @@ You can host this for less than a Steam game cost per year.
 Open an issue at <https://github.com/ThePie88/BadBlood-Revival/issues>
 with:
 
-- Output of `systemctl status badblood-revival`
-- Output of `systemctl status stunnel4`
-- Last ~50 lines of `journalctl -u badblood-revival -n 50`
+- Your OS (Linux distro + version, or Windows version)
+- Service status:
+  - Linux: `systemctl status badblood-revival` and `systemctl status stunnel4`
+  - Windows: `schtasks /Query /TN "BadBloodRevival-Server" /V /FO LIST`
+    and `sc query stunnel`
+- Backend logs (last ~50 lines):
+  - Linux: `journalctl -u badblood-revival -n 50`
+  - Windows: last 50 lines of `C:\BadBloodRevival\server\pls-emu.log`
 - What you tried, what failed
 - Whether DNS resolves correctly (`nslookup pls.example.it`)

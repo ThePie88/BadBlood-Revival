@@ -110,8 +110,9 @@ Legend: ✅ working — ⚠ partial / needs test — ❌ not working — 🐛 kn
 
 ```
 release/
-├── server/         FastAPI backend. Run on Windows or Linux.
-├── server-linux/   Linux extras (systemd unit, certbot, deployment notes).
+├── server/         FastAPI backend. Cross-platform: runs on Windows or Linux.
+├── server-linux/   Linux public-hosting helpers (systemd, certbot, ufw).
+├── server-windows/ Windows public-hosting helpers (Task Scheduler, win-acme).
 ├── launcher/       Win32 launcher (single C++ file + ImGui). Build with MinGW.
 ├── stubs/          Empty replacement DLLs for EAC + BattlEye.
 ├── texture-hook/   DLL that intercepts RCreateTexture2D and rewrites textures.

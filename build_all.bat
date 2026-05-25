@@ -199,6 +199,11 @@ if exist %DIST%\server\certs\cert.pem del /Q %DIST%\server\certs\cert.pem
 if exist %DIST%\server\certs\key.pem del /Q %DIST%\server\certs\key.pem
 if exist %DIST%\server\stunnel.conf del /Q %DIST%\server\stunnel.conf
 
+:: Public-hosting helpers for both OSes (optional — users who only want
+:: local play can ignore them)
+if exist server-linux xcopy /E /I /Q /Y server-linux %DIST%\server-linux >nul
+if exist server-windows xcopy /E /I /Q /Y server-windows %DIST%\server-windows >nul
+
 copy /Y HOW_TO_PLAY.md %DIST%\ >nul
 copy /Y HOW_TO_HOST.md %DIST%\ >nul
 copy /Y HOW_TO_BUILD.md %DIST%\ >nul
