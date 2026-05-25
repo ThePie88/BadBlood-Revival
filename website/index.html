@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PIE Edition — Dying Light: Bad Blood</title>
+    <link rel="icon" type="image/png" href="assets/icon.png">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Roboto+Condensed:wght@300;400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- TOP BAR — game-style tab nav -->
+    <nav>
+        <div class="nav-left">
+            <span class="nav-key">Q</span>
+            <a href="#hero" class="nav-tab active">HOME</a>
+            <a href="#about" class="nav-tab">ABOUT</a>
+            <a href="#features" class="nav-tab">FEATURES</a>
+            <a href="#download" class="nav-tab">DOWNLOAD</a>
+            <a href="#faq" class="nav-tab">FAQ</a>
+            <a href="#stats" class="nav-tab">STATUS</a>
+            <span class="nav-key">E</span>
+        </div>
+        <div class="nav-right">
+            <span class="nav-brand">PIE EDITION</span>
+            <span class="nav-version" id="nav-version">ver. —</span>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <section id="hero">
+        <div class="hero-content">
+            <video autoplay loop muted playsinline class="hero-logo">
+                <source src="assets/logo.webm" type="video/webm">
+            </video>
+            <h1>DYING LIGHT: BAD BLOOD</h1>
+            <h2>PIE EDITION</h2>
+            <p class="hero-tag">OPEN BETA &mdash; FREE FOR EVERYONE</p>
+            <a href="#download" class="btn-play">
+                <span class="btn-play-text">DOWNLOAD</span>
+                <span class="btn-play-arrow">&#9654;</span>
+            </a>
+        </div>
+        <!-- Bottom bar like in-game HUD -->
+        <div class="hero-hud">
+            <div class="hud-left">
+                <div class="hud-emblem">
+                    <img src="assets/icon.png" alt="PIE" class="hud-icon">
+                </div>
+                <div class="hud-info">
+                    <span class="hud-name">PIE SERVER</span>
+                    <div class="hud-bar-wrap">
+                        <span class="hud-label" id="hud-status">CHECKING...</span>
+                        <div class="hud-bar"><div class="hud-bar-fill" id="hud-bar-fill"></div></div>
+                    </div>
+                </div>
+            </div>
+            <div class="hud-right">
+                <div class="hud-stat">
+                    <span class="hud-stat-icon">&#9679;</span>
+                    <span class="hud-stat-val" id="hud-players">—</span>
+                    <span class="hud-stat-label">Online</span>
+                </div>
+                <div class="hud-stat">
+                    <span class="hud-stat-icon">&#9734;</span>
+                    <span class="hud-stat-val" id="hud-registered">—</span>
+                    <span class="hud-stat-label">Registered</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ABOUT — with vertical label like game panels -->
+    <section id="about" class="panel-section">
+        <div class="section-label"><span>ABOUT</span></div>
+        <div class="panel">
+            <div class="panel-header">
+                <h2>WHAT IS PIE EDITION?</h2>
+            </div>
+            <div class="panel-body">
+                <p>
+                    Dying Light: Bad Blood is a battle royale by Techland. The official servers are still online
+                    but no longer maintained, and the game has been delisted from Steam: the playerbase is destined to disappear.
+                </p>
+                <p>
+                    PIE Edition is a personal preservation project that keeps the game alive
+                    with custom servers, a dedicated launcher and modded content. Free, for anyone who still wants to play it.
+                </p>
+                <div class="notice-bar">
+                    <strong>OPEN BETA</strong> &mdash; This is an early release. Loot boxes and leaderboards
+                    are not yet functional. Core gameplay (matchmaking, shop, skins) works but may have bugs.
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FEATURES — card row like archetype selection -->
+    <section id="features" class="panel-section">
+        <div class="section-label"><span>FEATURES</span></div>
+        <div class="panel">
+            <div class="panel-header">
+                <h2>CHOOSE YOUR FEATURE</h2>
+            </div>
+            <div class="panel-body">
+                <div class="card-row">
+                    <div class="game-card">
+                        <div class="game-card-img">
+                            <div class="game-card-icon">&#127912;</div>
+                        </div>
+                        <div class="game-card-name">Custom Skin</div>
+                        <div class="game-card-desc">20 FPP skins per Agent with unique colored gloves. Distributed server-side via launcher patch — all players see the same skins, no mismatch.</div>
+                    </div>
+                    <div class="game-card">
+                        <div class="game-card-img">
+                            <div class="game-card-icon">&#128268;</div>
+                        </div>
+                        <div class="game-card-name">Server-Side</div>
+                        <div class="game-card-desc">Textures and mods managed by official patches downloaded from the launcher. Consistency guaranteed across all players.</div>
+                    </div>
+                    <div class="game-card active">
+                        <div class="game-card-img">
+                            <div class="game-card-icon">&#128640;</div>
+                        </div>
+                        <div class="game-card-name">Auto-Update</div>
+                        <div class="game-card-desc">The launcher patches the game automatically. One click to update, one click to play.</div>
+                    </div>
+                    <div class="game-card">
+                        <div class="game-card-img">
+                            <div class="game-card-icon">&#127760;</div>
+                        </div>
+                        <div class="game-card-name">Dedicated Server</div>
+                        <div class="game-card-desc">Remote dedicated server. No port forwarding, no local setup. Launch and play.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- DOWNLOAD -->
+    <section id="download" class="panel-section">
+        <div class="section-label"><span>DOWNLOAD</span></div>
+        <div class="panel">
+            <div class="panel-header">
+                <h2>PIE LAUNCHER</h2>
+                <span class="panel-header-sub">Version 1.0.0 &mdash; OPEN BETA</span>
+            </div>
+            <div class="panel-body download-body">
+                <div class="download-center">
+                    <a href="PIE-LAUNCHER.exe" class="btn-play btn-play-big">
+                        <span class="btn-play-text">DOWNLOAD PIE-LAUNCHER.exe</span>
+                        <span class="btn-play-arrow">&#9654;</span>
+                    </a>
+                    <p class="download-size">~1.4 MB &mdash; Windows 10/11</p>
+                </div>
+
+                <div class="vt-box">
+                    <a href="https://www.virustotal.com/gui/file/2c9ce2c5cab7f474677bf695e68e9189afd33cdfb7958583b0f35f54cfa84fcf?nocache=1" target="_blank" class="vt-link">
+                        &#9989; VirusTotal Scan — 0 detections
+                    </a>
+                    <p class="vt-note">
+                        Game mod launchers may trigger false positives in some antivirus software.
+                        This is normal for programs that hook into game processes.
+                    </p>
+                </div>
+
+                <div class="download-columns">
+                    <div class="download-col">
+                        <h3>REQUIREMENTS</h3>
+                        <ul>
+                            <li>Windows 10 or 11</li>
+                            <li>Dying Light: Bad Blood game files</li>
+                            <li>~500 MB free space for the patch</li>
+                        </ul>
+                    </div>
+                    <div class="download-col">
+                        <h3>HOW TO USE</h3>
+                        <ol>
+                            <li>Download and run PIE-LAUNCHER.exe (Run as Administrator)</li>
+                            <li>Accept the EULA</li>
+                            <li>Create an account or login</li>
+                            <li>Select your game folder or download the full client</li>
+                            <li>Click "Patch Game" to apply the PIE patch</li>
+                            <li>Click "Play"</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq" class="panel-section">
+        <div class="section-label"><span>FAQ</span></div>
+        <div class="panel">
+            <div class="panel-header">
+                <h2>FREQUENTLY ASKED</h2>
+            </div>
+            <div class="panel-body">
+                <div class="faq-list">
+                    <div class="faq-item">
+                        <h3>IS THIS SAFE?</h3>
+                        <p>
+                            Yes. The launcher and all mod files are scanned on
+                            <a href="https://www.virustotal.com/gui/file/2c9ce2c5cab7f474677bf695e68e9189afd33cdfb7958583b0f35f54cfa84fcf?nocache=1" target="_blank">VirusTotal</a>
+                            with 0 detections. Game modding tools may trigger generic heuristic warnings —
+                            this is a false positive common to all game mods.
+                        </p>
+                    </div>
+                    <div class="faq-item">
+                        <h3>DO I NEED TO BUY THE GAME?</h3>
+                        <p>
+                            The game has been delisted from Steam and can no longer be purchased. If you already own it,
+                            the launcher patches your existing installation. Otherwise, the launcher can download
+                            the full client for you.
+                        </p>
+                    </div>
+                    <div class="faq-item">
+                        <h3>WILL I GET BANNED?</h3>
+                        <p>
+                            No. PIE Edition runs on independent servers, separate from Techland's official ones.
+                            The launcher redirects the game to the custom server — the official servers never see your traffic.
+                        </p>
+                    </div>
+                    <div class="faq-item">
+                        <h3>IS IT STABLE?</h3>
+                        <p>
+                            It's an <strong>OPEN BETA</strong>. Core gameplay works — you can create accounts,
+                            browse the shop, equip skins and play matches. Loot boxes and leaderboards are not
+                            yet functional. Expect some bugs.
+                        </p>
+                    </div>
+                    <div class="faq-item">
+                        <h3>HOW DOES IT WORK?</h3>
+                        <p>
+                            The launcher patches your game to connect to our community server instead of
+                            Techland's defunct servers. A small DLL hooks into the game's rendering engine
+                            to enable custom textures. No original game files are permanently modified.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- STATS -->
+    <section id="stats" class="panel-section">
+        <div class="section-label"><span>STATUS</span></div>
+        <div class="panel">
+            <div class="panel-header">
+                <h2>SERVER STATUS</h2>
+            </div>
+            <div class="panel-body">
+                <div class="stats-row">
+                    <div class="stat-block">
+                        <div class="stat-val" id="stat-status">CHECKING...</div>
+                        <div class="stat-lbl">SERVER</div>
+                    </div>
+                    <div class="stat-block">
+                        <div class="stat-val" id="stat-players">—</div>
+                        <div class="stat-lbl">PLAYERS ONLINE</div>
+                    </div>
+                    <div class="stat-block">
+                        <div class="stat-val" id="stat-registered">—</div>
+                        <div class="stat-lbl">REGISTERED</div>
+                    </div>
+                    <div class="stat-block">
+                        <div class="stat-val" id="stat-version">—</div>
+                        <div class="stat-lbl">PATCH VERSION</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER — game bottom bar style -->
+    <footer>
+        <div class="footer-left">
+            <span class="footer-key">C</span>
+            <span class="footer-text">A personal project by MrPie</span>
+        </div>
+        <div class="footer-center">
+            <p class="footer-legal">
+                This project is not affiliated with, endorsed by, or associated with Techland S.A.
+                All original game assets and trademarks remain the property of Techland S.A.
+                OPEN BETA — Non-commercial community preservation project.
+            </p>
+        </div>
+        <div class="footer-right">
+            <span class="footer-key">Esc</span>
+            <span class="footer-text">BACK TO TOP</span>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

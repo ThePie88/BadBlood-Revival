@@ -1,0 +1,23 @@
+; BadBlood-Revival — stunnel configuration template
+;
+; This file accepts HTTPS on :443, decrypts, and forwards plaintext HTTP to
+; the FastAPI server on :80. The game expects HTTPS on the original Techland
+; hostname; engine SSL verification is disabled by the patcher.
+;
+; To use:
+;   1. Copy this file to stunnel.conf (drop the .template suffix).
+;   2. Adjust paths if your certs live elsewhere.
+;   3. On Linux, paths must be absolute (e.g. /opt/badblood-revival/certs/cert.pem).
+;   4. Run as administrator/root (port 443 is privileged).
+
+[pls]
+accept = 443
+connect = 127.0.0.1:80
+
+; Paths are relative to where you launch stunnel from.
+; On Windows, run stunnel from the server/ directory.
+; On Linux, prefer absolute paths in /etc/stunnel/stunnel.conf.
+cert = certs/cert.pem
+key = certs/key.pem
+
+TIMEOUTclose = 0

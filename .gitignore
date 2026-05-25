@@ -1,0 +1,185 @@
+# =============================================================================
+# BadBlood-Revival — .gitignore
+# =============================================================================
+
+# ---- Techland game assets (NEVER commit) ------------------------------------
+# Any file derived from or containing original Dying Light: Bad Blood data
+*.pak
+*.rpack
+*.rpacz
+*.scr
+*.mp
+*.msh
+*.dat
+*.bin
+BadBloodGame.exe
+BadBloodGame.exe.*
+BadBloodGameLauncher.exe
+engine_x64_rwdi.dll
+engine_x64_rwdi.dll.*
+gamedll_x64_rwdi.dll
+gamedll_x64_rwdi.dll.*
+filesystem_x64_rwdi.dll
+rd3d11_x64_rwdi.dll
+ColdClientLoader.ini
+# Whole patched-game folders (if accidentally created inside the repo)
+Dying Light Bad Blood/
+PATCH-PIE/
+SERVER-VPS/
+SERVER-VPS.rar
+TESTER_PACKAGE.rar
+backup_originals/
+OLD-DEPOT-FINDINGS/
+
+# ---- Third-party tool binaries (link in README instead) ---------------------
+steam_api.dll
+steam_api64.dll
+steamclient.dll
+steamclient64.dll
+EasyAntiCheat_Setup.exe
+LightFX_original.dll
+DbgHelp.dll
+discord-rpc.dll
+SDL2.dll
+bink2w64.dll
+GFSDK_*.dll
+Interactivity.*.dll
+Tobii.*.dll
+*.rar
+*.zip
+Steamless/
+steamless/
+goldberg/
+quickbms/
+quickbms_win.zip
+
+# ---- Secrets / credentials --------------------------------------------------
+*.pem
+*.key
+*.crt
+*.cer
+*.p12
+*.pfx
+**/certs/*
+!**/certs/.gitkeep
+.env
+.env.*
+!.env.example
+
+# ---- Runtime data / user data -----------------------------------------------
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+*.sqlite
+*.sqlite3
+**/data/*
+!**/data/.gitkeep
+fixtures_captured/
+dumps/
+profiles/
+out/profiles/
+steam_settings/
+mods/textures/
+mods/textures_backup/
+
+# ---- Logs -------------------------------------------------------------------
+*.log
+*.log.*
+proxy-*.txt
+proxy-stdout*
+
+# ---- Build artifacts --------------------------------------------------------
+*.o
+*.obj
+*.exe
+*.dll
+*.lib
+*.exp
+*.pdb
+*.ilk
+*.tlog
+*.idb
+*.suo
+*.user
+*.opensdf
+*.sdf
+*.cache
+*.bak
+*.backup
+*.backup_*
+*.orig
+*.original
+build/
+Release/
+Debug/
+x64/
+out/
+bin/
+target/
+
+# ---- Python -----------------------------------------------------------------
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+venv/
+env/
+.venv/
+
+# ---- C/C++ ------------------------------------------------------------------
+*.d
+*.so
+*.dylib
+
+# ---- IDE / editor -----------------------------------------------------------
+.vscode/
+.idea/
+*.iml
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+*.swo
+*~
+
+# ---- Reverse engineering output ---------------------------------------------
+*.id0
+*.id1
+*.id2
+*.nam
+*.til
+*.i64
+ida_output.*
+ida_*_log.txt
+*.bms
+
+# ---- Claude Code / agent state ----------------------------------------------
+.claude/
+.claudeignore
+CLAUDE.md
+memory/
+artifacts/recon/
+artifacts/extracted/
+artifacts/pak_extract/
+artifacts/pak_extract_BACKUP_*/
+artifacts/textures_rgba/
+artifacts/Data0_extracted/
+
+# ---- Heavy research artifacts (keep only documentation) ---------------------
+artifacts/*.dds
+artifacts/*.dxbc
+artifacts/*.png
+artifacts/snapshot.json
+artifacts/memscan-results.txt
+artifacts/techland-responses-real.log
+
+# ---- Misc -------------------------------------------------------------------
+*.avi
+*.mp4
+*.tmp
+nul

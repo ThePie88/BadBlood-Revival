@@ -1,0 +1,88 @@
+{
+  "$schema_version": 1,
+  "$description": "Patch recipe for Dying Light: Bad Blood client. Applied by apply_patches.py against a user's legitimately-owned vanilla install.",
+
+  "files": {
+    "engine_x64_rwdi.dll": {
+      "size_hint_bytes": null,
+      "comment": "Chrome Engine 6 main DLL. Original Techland binary, never redistributed.",
+
+      "byte_patches": [
+        {
+          "id": "eac_launcher_check_bypass",
+          "offset": "0x6F73DE",
+          "before": "0F 85 BE 00 00 00",
+          "after":  "E9 01 01 00 00 90",
+          "description": "Skips EAC GameClient_Initialize gate. Without this patch the engine shows 'Start the game using BadBloodGameLauncher.exe' and exits."
+        },
+        {
+          "id": "ssl_verify_peer_off",
+          "offset": "0x6F95AA",
+          "before": null,
+          "after":  "45 33 C0 90",
+          "description": "Forces CURLOPT_SSL_VERIFYPEER = 0. Allows self-signed certificates on the emulated server. Original instruction: SETNZ R8B (4 bytes). Patched to: XOR R8D,R8D ; NOP."
+        },
+        {
+          "id": "ssl_verify_host_off",
+          "offset": "0x6F95C3",
+          "before": null,
+          "after":  "45 33 C0 90",
+          "description": "Forces CURLOPT_SSL_VERIFYHOST = 0. Allows hostname mismatch in cert. Same instruction swap as VERIFYPEER."
+        },
+        {
+          "id": "http_transport_gate",
+          "offset": "0x7152C6",
+          "before": null,
+          "after":  "48 C7 83 80 00 00 00 01 00 00 00 90",
+          "description": "Forces the HTTP transport gate flag at [object+0x80] to 1. Without this the auth response is parsed but never delivered to the game (NULL pointer at [object+0x80])."
+        },
+        {
+          "id": "rpacz_whitelist_nop",
+          "offset": "0x5B7C72",
+          "before": null,
+          "after":  "90 90 90 90 90",
+          "description": "NOPs the rpacz filename whitelist check, allowing the engine to load custom .rpacz patches with any name. Required for custom addon skins. Patch length is approximate — see verify_patches.py for exact verification."
+        }
+      ],
+
+      "string_patches": [
+        {
+          "id": "pls_hostname",
+          "find":  "pls.dlbb.com",
+          "encoding": "ascii",
+          "replace_token": "{server_host}",
+          "max_length": 12,
+          "occurrences_min": 1,
+          "description": "Replaces the hardcoded Techland PLS hostname with the user's emulated server hostname. Replacement MUST be exactly 12 ASCII characters to preserve binary alignment. Choose your hostname accordingly (e.g. pls.foo123.it = 12 chars)."
+        }
+      ]
+    },
+
+    "BadBloodGame.exe": {
+      "size_hint_bytes": null,
+      "comment": "Main game executable. Must be Steamless-unpacked BEFORE running this patcher.",
+      "prerequisite": "Run Steamless v3.1+ on your Steam-installed BadBloodGame.exe first. The unpacked file is ~975KB (vs ~1.15MB packed). See docs/setup-game.md.",
+
+      "byte_patches": [],
+
+      "string_patches": [
+        {
+          "id": "pls_hostname",
+          "find":  "pls.dlbb.com",
+          "encoding": "ascii",
+          "replace_token": "{server_host}",
+          "max_length": 12,
+          "occurrences_min": 0,
+          "occurrences_max": 99,
+          "description": "Some strings of pls.dlbb.com may also appear in the EXE. Same 12-char constraint."
+        }
+      ]
+    }
+  },
+
+  "hosts_entry": {
+    "comment": "The user's hosts file should redirect the original Techland hostname (still embedded in some game code paths) to localhost so stunnel can intercept HTTPS.",
+    "entry": "127.0.0.1 pls.dlbb.com  # BadBlood-Revival",
+    "marker": "BadBlood-Revival"
+  }
+}
