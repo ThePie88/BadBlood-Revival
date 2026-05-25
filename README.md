@@ -8,7 +8,33 @@ Buy the game on Steam (if you still can) and play it again.
 
 > ⚠ Bring your own legitimate copy of the game. This project does NOT
 > redistribute any Techland binary, asset, or data file. You patch your
-> own install. See the [Legal](#legal) section.
+> own install. See the [Legal](#legal-game) section.
+
+---
+
+## 🎯 Which guide do you need?
+
+This project has three audiences. Pick the one that matches you and
+follow that guide — don't try to read everything at once.
+
+### 🎮 I just want to PLAY the game
+👉 **[HOW_TO_PLAY.md](HOW_TO_PLAY.md)** — Ultra-detailed step-by-step
+walkthrough. Zero prior knowledge assumed. Every download link, every
+command, every common error and its fix. ~15-30 minutes to set up.
+
+### 🏠 I want to HOST a server (for myself, friends on LAN, or publicly)
+👉 **[HOW_TO_HOST.md](HOW_TO_HOST.md)** — Three scenarios documented:
+local single-PC, LAN with friends, public VPS with your own domain.
+Covers DNS, TLS, firewall, backups, monitoring.
+
+### 🛠️ I want to BUILD / modify / contribute to the code
+👉 **[HOW_TO_BUILD.md](HOW_TO_BUILD.md)** — Toolchain setup
+(MinGW-w64), component-by-component build instructions, troubleshooting,
+project layout, contribution guidelines. Or run `build_all.bat` at the
+repo root and let it do everything.
+
+The rest of this README is high-level overview + status. **Open the
+guide above first.**
 
 ---
 
@@ -122,71 +148,23 @@ Each folder has its own `README.md` with build / run / configure details.
 
 ---
 
-## Quick start — Local play (no domain)
+## 30-second overview
 
-Best path if you just want the game to work on your PC or a small LAN
-with friends. Server runs on `127.0.0.1`, no domain involved.
+The 9 high-level steps. **Don't try to do this from the README** — open
+the relevant guide above for the detailed walkthrough. This is just to
+show you what's involved before you commit.
 
-```cmd
-:: 1. Get the code
-git clone https://github.com/ThePie88/BadBlood-Revival.git
-cd BadBlood-Revival
+1. Buy / install Dying Light: Bad Blood from your Steam library
+2. Run Steamless on `BadBloodGame.exe` (removes DRM stub)
+3. Set up a local server (`server/setup-local.bat` does this in one click)
+4. Edit your hosts file: `127.0.0.1 pls.dlbb.com`
+5. Start the server + stunnel
+6. Run the patcher on your game folder
+7. Drop pre-built DLLs (or build them yourself) into the game folder
+8. Add Goldberg Steam Emu files
+9. Run the launcher → register → PLAY
 
-:: 2. One-stop server setup (generates cert, installs deps, writes configs)
-cd server
-setup-local.bat
-
-:: 3. Add hosts entry as Administrator (one time):
-::    127.0.0.1 pls.dlbb.com
-::    in C:\Windows\System32\drivers\etc\hosts
-::    (or let the patcher do it for you in step 5 — it tries automatically)
-
-:: 4. Start the server (this terminal)
-run.bat
-
-:: 5. In ANOTHER terminal (as Administrator) start stunnel
-"C:\Program Files (x86)\stunnel\bin\stunnel.exe" stunnel.conf
-
-:: 6. Patch your game (one time) — use Steamless first, see docs/setup-game.md
-cd ..\patcher
-python apply_patches.py --game-dir "C:\Games\DLBB-copy" --local
-
-:: 7. Build the DLLs + launcher (one time)
-cd ..\stubs && build.bat
-cd ..\texture-hook && build.bat
-cd ..\launcher && build.bat
-
-:: 8. Drop the built DLLs into the game folder (see docs/setup-game.md)
-:: 9. Run launcher (PIE-LAUNCHER.exe), register, PLAY
-```
-
-The whole thing is documented step-by-step in
-[`docs/setup-local.md`](docs/setup-local.md). Linux/macOS path uses
-`setup-local.sh` and `sudo` instead.
-
----
-
-## Quick start — Public hosting (VPS + domain)
-
-For internet multiplayer with players on different networks. You'll need
-a 12-character ASCII domain (see constraint below) pointing at a VPS.
-
-```bash
-# On the VPS (Ubuntu/Debian, as root):
-git clone https://github.com/ThePie88/BadBlood-Revival.git /opt/badblood-revival
-bash /opt/badblood-revival/server-linux/setup_vps.sh pls.yourdomain.it
-
-# Then on each player's PC:
-cd patcher
-python apply_patches.py --game-dir "C:\Games\DLBB" --server-host pls.yourdomain.it
-# (rebuild launcher with SERVER_HOST/VPS_IP set to your domain/IP first)
-```
-
-Full guide: [`server-linux/README.md`](server-linux/README.md).
-
-Players don't need to know it's a "public" deployment — to them it's the
-same as the local setup, except the hosts file points at the VPS IP
-instead of 127.0.0.1.
+Total time from scratch: about 30 minutes. Most of it is downloads.
 
 ---
 
