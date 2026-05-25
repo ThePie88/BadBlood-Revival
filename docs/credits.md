@@ -2,11 +2,16 @@
 
 ## Project
 
-- **MrPie (Filip Otto)** — project lead. Server, launcher, patcher, hooks,
-  reverse engineering, integration. Discovered the engine offsets, the
-  auth-response format, the HTTP gate flag at `[+0x80]`, the SSL verify
-  bypass, the EAC launcher-check bypass, and the `RCreateTexture2D` hook
-  point. Designed the architecture.
+This project is licensed under the **Apache License 2.0** — see
+[`LICENSE`](../LICENSE) and [`NOTICE`](../NOTICE) at the repo root.
+Under Apache 2.0 Section 4(c), the attribution below must be preserved
+in any derivative work.
+
+- **MrPie (Filip Otto)** — project lead and copyright holder. Server,
+  launcher, patcher, hooks, reverse engineering, integration. Discovered
+  the engine offsets, the auth-response format, the HTTP gate flag at
+  `[+0x80]`, the SSL verify bypass, the EAC launcher-check bypass, and
+  the `RCreateTexture2D` hook point. Designed the architecture.
 
 - **Crigrey** — addon skin pipeline, custom texture pack creation. Did
   the artwork and rpack tooling for the first community-shipped skin

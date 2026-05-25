@@ -354,14 +354,33 @@ See [docs/credits.md](docs/credits.md) for the full attribution list.
 
 ---
 
-## Legal
+## License
+
+This project is licensed under the **Apache License 2.0** — see
+[`LICENSE`](LICENSE) and [`NOTICE`](NOTICE).
+
+You're free to use, modify, fork, and redistribute the code. The license
+requires that you:
+
+- Keep the copyright notices and the `NOTICE` file
+- State if you've modified any file
+- Don't use "BadBlood-Revival" or "MrPie" as your project's name or
+  endorsement without permission
+
+Contributions back to the canonical repo at
+<https://github.com/ThePie88/BadBlood-Revival> are encouraged — see
+[`CONTRIBUTING.md`](CONTRIBUTING.md).
+
+---
+
+## Legal (game)
 
 `Dying Light: Bad Blood`, the Dying Light franchise, all associated assets,
 and the original PLS backend protocol are property of **Techland S.A.**
 This project is not affiliated with, endorsed by, or sponsored by Techland.
 
 This repository contains **only**:
-- Original code (server, launcher, patcher, hooks, stubs) — MIT licensed.
+- Original code (server, launcher, patcher, hooks, stubs) — Apache 2.0 licensed.
 - Documentation of byte offsets and protocol shapes that we discovered by
   observing our own legitimately-purchased game running and by passive
   traffic capture against the (still-up-but-broken) Techland endpoints.
@@ -387,13 +406,17 @@ that users still hold valid licenses to the underlying software.
 
 ## Contributing
 
-Pull requests welcome. Areas where help is especially wanted:
+Pull requests welcome — see [`CONTRIBUTING.md`](CONTRIBUTING.md) for the
+process and the "help wanted" list.
+
+Quick summary of areas where help is especially wanted:
 - Leaderboard index format reverse engineering
 - Player stats format reverse engineering
 - Mesh-level Player_09 glove overlay removal
 - 32-bit MinGW build for the x86 EAC stub
 - PE section expansion to lift the 12-character hostname constraint
 - Launcher runtime config (move the `#define`s into `launcher.cfg`)
+- Server endpoint tests
 
 Open an issue first if you want to land something big.
 

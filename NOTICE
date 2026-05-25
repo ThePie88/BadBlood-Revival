@@ -1,0 +1,95 @@
+BadBlood-Revival
+Copyright 2026 MrPie (Filip Otto)
+
+This product includes software developed by MrPie (https://github.com/ThePie88).
+
+================================================================================
+Project authorship
+================================================================================
+
+BadBlood-Revival was created and is maintained by MrPie (Filip Otto).
+Original work in this repository includes:
+
+  - Server emulator (FastAPI Python backend re-implementing Techland's
+    proprietary PLS protocol — auth, profile, inventory, shop, leaderboards,
+    friends, matchmaking relay)
+  - Win32/Direct3D 11 launcher with ImGui UI
+  - Client patcher (Python, applies byte-level patches to a vanilla install)
+  - DLL hooks for runtime texture replacement and DNS redirection
+  - Empty replacement DLLs (stubs) for EasyAntiCheat and BattlEye
+  - Reverse engineering of the PLS auth flow, the engine HTTP transport
+    gate field at [+0x80], the EAC launcher-check bypass at 0x6F73DE,
+    the CURLOPT_SSL_VERIFY* bypass instructions, the rpacz filename
+    whitelist, the RP6L rpack file format, and the RCreateTexture2D
+    interception point in rd3d11
+
+Per Section 4(c) of the Apache License 2.0, any derivative work that
+redistributes parts of BadBlood-Revival in Source form must retain the
+above copyright notice, this NOTICE file, and the attribution to MrPie.
+
+================================================================================
+Contributors
+================================================================================
+
+  - MrPie (Filip Otto)  - project lead, reverse engineering, all original code
+  - Crigrey            - addon skin pipeline, custom texture pack creation
+
+See docs/credits.md for the full list of contributors and third-party
+software used by this project.
+
+================================================================================
+Game and engine
+================================================================================
+
+"Dying Light: Bad Blood", the Dying Light franchise, and all related
+assets are property of Techland S.A. (Wroclaw, Poland).
+
+This project is NOT affiliated with, endorsed by, or sponsored by Techland.
+
+This project does not redistribute any Techland binary, asset, archive,
+or data file. Users of this project must own a legitimate copy of Dying
+Light: Bad Blood obtained through their own Steam purchase prior to the
+game's removal from sale.
+
+================================================================================
+Third-party software
+================================================================================
+
+This project depends on or interoperates with the following third-party
+software, each under its own license. None of these are redistributed in
+this repository (see each project's official release page):
+
+  - Goldberg Steam Emulator (LGPL-3.0)
+      https://gitlab.com/Mr_Goldberg/goldberg_emulator
+      Maintained fork: https://github.com/Detanup01/gbe_fork
+  - Steamless (MIT)
+      https://github.com/atom0s/Steamless
+  - QuickBMS (Free for non-commercial use)
+      https://aluigi.altervista.org/quickbms.htm
+  - stunnel (GPL-2.0+)
+      https://www.stunnel.org/
+  - Dear ImGui (MIT)  - included in source form under launcher/lib/imgui/
+      https://github.com/ocornut/imgui
+  - stb_image (Public Domain / MIT)  - included as a single header
+      https://github.com/nothings/stb
+  - FastAPI (MIT)
+  - Uvicorn (BSD-3-Clause)
+  - Pydantic (MIT)
+  - httpx (BSD-3-Clause)
+
+================================================================================
+Attribution requirements summary
+================================================================================
+
+If you fork, modify, or redistribute this project (in whole or in part)
+under Apache License 2.0:
+
+  1. Keep the LICENSE file
+  2. Keep this NOTICE file (or merge its contents into your own NOTICE)
+  3. Preserve the "Created by MrPie" / copyright lines in source files
+     that already carry them
+  4. State prominently if you have modified files
+
+Forks are welcome. Contributions back to the canonical repo at
+https://github.com/ThePie88/BadBlood-Revival are encouraged — see
+CONTRIBUTING.md.
