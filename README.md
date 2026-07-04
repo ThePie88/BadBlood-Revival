@@ -33,6 +33,13 @@ Covers DNS, TLS, firewall, backups, monitoring.
 project layout, contribution guidelines. Or run `build_all.bat` at the
 repo root and let it do everything.
 
+### 🎨 I only want CUSTOM TEXTURES / skins (the texture hook)
+👉 **[texture-hook/TEXTURE_MODDING_GUIDE.md](texture-hook/TEXTURE_MODDING_GUIDE.md)**
+— Complete copy-paste walkthrough for installing custom textures, from
+"I own the game on Steam" to "my image is in-game." Note: seeing textures
+in-game needs the full local setup (the hook routes the game through the
+local server), so this guide includes that too.
+
 The rest of this README is high-level overview + status. **Open the
 guide above first.**
 

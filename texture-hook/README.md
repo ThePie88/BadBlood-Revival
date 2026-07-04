@@ -1,5 +1,12 @@
 # texture-hook/
 
+> **Just want to install custom textures and don't know how to build/patch?**
+> Read **[TEXTURE_MODDING_GUIDE.md](TEXTURE_MODDING_GUIDE.md)** — a complete,
+> copy-paste, zero-assumed-knowledge walkthrough from "I own the game on Steam"
+> to "my image is in-game." (Heads up: because the hook redirects the game to
+> the local server, seeing textures in-game requires the full local setup, not
+> just the DLL — the guide explains why and walks you through all of it.)
+
 The texture hook is a DLL injected into `BadBloodGame.exe` via a proxy
 `LightFX.dll`. At runtime it:
 
